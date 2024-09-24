@@ -2,9 +2,9 @@
 객체 지향 OLE 문법의 간단한 래핑
 ## [CODE](http://github.com/Pasumao/OOOLE)
 ## DEMO
-![desc](http://www.aspnc.com.cn:9000/community/2024/2024-09/2024-09-24/a7f9341e-d439-403f-8e2e-d6602b94088a.png){{{width="auto" height="auto"}}}  
-![desc](http://www.aspnc.com.cn:9000/community/2024/2024-09/2024-09-24/6b49bda4-a86d-4ffc-b563-0d9bb1bf6472.png){{{width="auto" height="auto"}}}  
-![desc](http://www.aspnc.com.cn:9000/community/2024/2024-09/2024-09-24/fc8145d6-9059-45cb-a950-d70682528940.png){{{width="auto" height="auto"}}}
+![image](https://github.com/user-attachments/assets/7ea148c2-8be6-4b82-a3cd-10daba524a9f)
+![image](https://github.com/user-attachments/assets/28e7c1ca-117f-4a9c-8caf-17bbdad46881)
+![image](https://github.com/user-attachments/assets/ee5eafa9-7cea-43e0-8770-bd84c952734e)
 ## API
 ### CL_OLE
 <a id="cl_ole"></a>
