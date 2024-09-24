@@ -1,5 +1,5 @@
 # OOOLE
-객체 지향 OLE 문법의 간단한 래핑
+Object-oriented implementation of OLE2 syntax in SAP ABAP
 ## [CODE](http://github.com/Pasumao/OOOLE)
 ## DEMO
 ![image](https://github.com/user-attachments/assets/7ea148c2-8be6-4b82-a3cd-10daba524a9f)
