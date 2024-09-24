@@ -1,111 +1,273 @@
 # OOOLE
-Object-oriented implementation of OLE2 syntax in SAP ABAP
-## vba Parameter reference table 
-- https://learn.microsoft.com/en-us/previous-versions/office/developer/office-2003/aa221100(v=office.11)?redirectedfrom=MSDN
-## basic syntax
-```vba
-Sub ExcelOperations()
-    Dim EXCEL As Object
-    Set EXCEL = CreateObject("Excel.Application")
-
-    EXCEL.Visible = True
-
-    Dim WORKBOOKS As Object
-    Set WORKBOOKS = EXCEL.Workbooks
-    Dim WORKBOOK As Object
-    Set WORKBOOK = WORKBOOKS.Add
-
-    Dim SHEET As Object
-    Set SHEET = EXCEL.ActiveSheet
-
-    SHEET.Cells(1, 1).Value = "TEST"
-End Sub
+객체 지향 OLE 문법의 간단한 래핑
+## [CODE](http://github.com/Pasumao/OOOLE)
+## DEMO
+![desc](http://www.aspnc.com.cn:9000/community/2024/2024-09/2024-09-24/a7f9341e-d439-403f-8e2e-d6602b94088a.png){{{width="auto" height="auto"}}}  
+![desc](http://www.aspnc.com.cn:9000/community/2024/2024-09/2024-09-24/6b49bda4-a86d-4ffc-b563-0d9bb1bf6472.png){{{width="auto" height="auto"}}}  
+![desc](http://www.aspnc.com.cn:9000/community/2024/2024-09/2024-09-24/fc8145d6-9059-45cb-a950-d70682528940.png){{{width="auto" height="auto"}}}
+## API
+### CL_OLE
+<a id="cl_ole"></a>
+#### Overview
+Extends: NONE
+#### DATA
+``` ABAP
+OBJ      TYPE OLE2_OBJECT
+CHILDREN TYPE TABLE OF REF TO CL_OLE
+PARENT   TYPE REF TO CL_OLE
 ```
-```abap
-DATA(EXCEL) = NEW CL_OLE_EXCEL( ).
-EXCEL->SET_PROPERTY( E_PROPERTY = 'VISIBLE' E_VALUE = 1 ).
-DATA(WORKBOOKS) = EXCEL->CALL_METHOD_OF( E_METHOD = 'WORKBOOKS' ).
-DATA(WORKBOOK) = WORKBOOKS->CALL_METHOD_OF( E_METHOD = 'ADD' ).
-DATA(SHEET) = EXCEL->CALL_METHOD_OF( E_METHOD = 'ACTIVESHEET' ).
-DATA(CELL) = SHEET->CALL_METHOD_OF( E_METHOD = 'CELLS' E_ARG1 = 1 E_ARG2 = 1 ).
-CELL->SET_PROPERTY( E_PROPERTY = 'VALUE' E_VALUE = 'TEST' ).
+#### METHOD
+##### FREE_ALL
+FREE ALL OBJECT。
+##### FREE
+FREE OBJECT（don't use）。
+##### CONSTRUCTOR
+``` ABAP
+IMPORTING
+  E_PARENT TYPE REF TO CL_OLE OPTIONAL
 ```
-## encapsulated method
-```vba
-Sub ExcelOperations()
-    Dim OOOLE As Object
-    Set OOOLE = CreateObject("Excel.Application")
-
-    OOOLE.Visible = True
-    OOOLE.Workbooks.Add
-    OOOLE.Sheets(2).Activate
-    OOOLE.ActiveSheet.Cells(2, 2).Value = "TEST"
-
-    With OOOLE.ActiveSheet.Cells(2, 2).Font
-        .Name = "Arial"
-        .Size = 15
-        .Bold = True
-        .Color = RGB(0, 0, 255) 
-        .Italic = True
-        .Underline = xlUnderlineStyleSingleAccounting
-    End With
-
-    OOOLE.ActiveSheet.Cells(2, 2).Interior.Color = RGB(255, 204, 0)
-
-    With OOOLE.ActiveSheet.Cells(3, 3).Borders(xlEdgeLeft)
-        .LineStyle = xlContinuous
-    End With
-    With OOOLE.ActiveSheet.Cells(3, 3).Borders(xlEdgeTop)
-        .LineStyle = xlContinuous
-    End With
-    With OOOLE.ActiveSheet.Cells(3, 3).Borders(xlEdgeBottom)
-        .LineStyle = xlContinuous
-    End With
-    With OOOLE.ActiveSheet.Cells(3, 3).Borders(xlEdgeRight)
-        .LineStyle = xlContinuous
-        .Weight = xlThick
-    End With
-
-    OOOLE.ActiveSheet.Cells(4, 4).Value = 1.23
-    OOOLE.ActiveSheet.Cells(4, 4).NumberFormat = "0.00"
-
-    OOOLE.ActiveSheet.Cells(5, 4).Value = DateSerial(2012, 2, 1)
-    OOOLE.ActiveSheet.Cells(5, 4).NumberFormat = "M/D/YYYY"
-    
-    OOOLE.ActiveSheet.Cells(6, 4).NumberFormat = "# ?/?"
-    OOOLE.ActiveSheet.Cells(6, 4).Value = 1 / 2
-
-    OOOLE.Quit
-End Sub
+##### SET_PROPERTY
+SET_PROPERTY。
+``` ABAP
+IMPORTING
+  E_PROPERTY TYPE CHAR32
+  E_VALUE    TYPE ANY
 ```
-```abap
-DATA(OOOLE) = NEW CL_OLE_EXCEL( ).
-OOOLE->SETPROPERTY( E_VISIBLE = 1 ).
-OOOLE->WORKBOOKS( )->ADD( ).
-OOOLE->WORKSHEETS( 2 )->ACTIVATE( ).
-*WORKBOOKS->OPEN('C:\Users\ngj\Desktop\test111.xlsx').
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 2 E_COL = 2 )->VALUE( 'TEST' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 2 E_COL = 2 )->FONT( )->SETPROPERTY( E_NAME = 'Arial'
-                                                                           E_SIZE = 15
-                                                                           E_BOLD = 1
-                                                                           E_COLOR = -16776961
-                                                                           E_TINTANDSHADE = 0
-                                                                           E_ITALIC = 1
-                                                                           E_UNDERLINE = 2 ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 2 E_COL = 2 )->INTERIOR( )->SETPROPERTY( E_COLOR = 15773696 ).
+##### GET_PROPERTY
+GET_PROPERTY。
+``` ABAP
+IMPORTING
+  E_PROPERTY TYPE CHAR32
+EXPORTING
+  I_VALUE    TYPE ANY
+```
+##### CALL_METHOD
+CALL_METHOD。
+``` ABAP
+IMPORTING
+  E_METHOD TYPE C
+  E_ARG1   TYPE ANY OPTIONAL
+  E_ARG2   TYPE ANY OPTIONAL
+  E_ARG3   TYPE ANY OPTIONAL
+  E_ARG4   TYPE ANY OPTIONAL
+  E_ARG5   TYPE ANY OPTIONAL
+CHANGING
+  C_RETURN TYPE ANY OPTIONAL
+```
+##### CALL_METHOD_OF
+CALL_METHOD OF RETURN OBJECT。
+``` ABAP
+IMPORTING
+  E_METHOD TYPE C
+  E_ARG1   TYPE ANY OPTIONAL
+  E_ARG2   TYPE ANY OPTIONAL
+  E_ARG3   TYPE ANY OPTIONAL
+  E_ARG4   TYPE ANY OPTIONAL
+  E_ARG5   TYPE ANY OPTIONAL
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE
+```
+##### CREATE_OBJECT
+CREATE_OBJECT。
+``` ABAP
+IMPORTING
+  E_OBJ TYPE C
+```
 
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 3 E_COL = 3 )->BORDERS( '7' )->SETPROPERTY( E_LINESTYLE = '1' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 3 E_COL = 3 )->BORDERS( '8' )->SETPROPERTY( E_LINESTYLE = '1' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 3 E_COL = 3 )->BORDERS( '9' )->SETPROPERTY( E_LINESTYLE = '1' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 3 E_COL = 3 )->BORDERS( '10' )->SETPROPERTY( E_LINESTYLE = '1' E_WEIGHT = 4 ).
-
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 4 E_COL = 4 )->VALUE( '1.23' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 4 E_COL = 4 )->SETPROPERTY( E_NUMBERFORMAT = '0.00' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 5 E_COL = 4 )->VALUE( '02/01/2012' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 5 E_COL = 4 )->SETPROPERTY( E_NUMBERFORMAT = 'M/D/YYYY' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 6 E_COL = 4 )->SETPROPERTY( E_NUMBERFORMAT = '0.00' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 6 E_COL = 4 )->VALUE( '1/2' ).
-OOOLE->ACTIVESHEET( )->CELLS( E_ROW = 6 E_COL = 4 )->SETPROPERTY( E_NUMBERFORMAT = '# ?/?' ).
-
-OOOLE->QUIT( ).
+### CL_OLE_EXCEL
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+#### METHOD
+##### WORKBOOKS
+workbooks 객체를 반환합니다。
+``` ABAP
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_WORKBOOKS
+```
+##### ACTIVESHEET
+ACTIVESHEET객체를 반환합니다。
+``` ABAP
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_SHEET
+```
+##### QUIT
+QUIT AND FREE ALL NODE。
+##### CELLS
+CELLS객체를 반환합니다。
+``` ABAP
+IMPORTING
+  E_ROW       TYPE I
+  E_COL       TYPE I
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_CELL
+```
+##### WORKSHEETS
+WORKSHEETS객체를 반환합니다。
+``` ABAP
+IMPORTING
+  E_INDEX      TYPE I
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_SHEET
+```
+##### SAVEAS
+SAVEAS
+``` ABAP
+IMPORTING
+  E_PATH TYPE CHAR1024
+```
+##### SELECTION
+SELECED RANGE를 반환합니다。
+``` ABAP
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_RANGE
+```
+##### RUN
+MACRO RUN
+``` ABAP
+IMPORTING
+  E_MACRO TYPE CHAR1024
+```
+##### SETPROPERTY
+SET PROPERTY
+``` ABAP
+IMPORTING
+  E_TITLE               TYPE CHAR1024 OPTIONAL
+  E_VISIBLE             TYPE I OPTIONAL
+  E_SHEETSINNEWWORKBOOK TYPE I OPTIONAL
+```
+### CL_OLE_WORKBOOK
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+### CL_OLE_WORKBOOKS
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+#### METHOD
+##### ADD
+ADD WORKBOOK
+``` ABAP
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_WORKBOOK
+```
+##### OPEN
+OPEN LOCAL EXCEL FILE
+``` ABAP
+IMPORTING
+  E_PATH TYPE CHAR1024
+```
+### CL_OLE_FONT
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+#### METHOD
+##### SERPROPERTY
+``` ABAP
+IMPORTING 
+  E_NAME         TYPE CHAR32 OPTIONAL
+  E_BOLD         TYPE I OPTIONAL
+  E_SIZE         TYPE I OPTIONAL
+  E_COLOR        TYPE INT8 OPTIONAL
+  E_TINTANDSHADE TYPE I OPTIONAL
+  E_ITALIC       TYPE I OPTIONAL
+  E_UNDERLINE    TYPE I OPTIONAL
+```
+### CL_OLE_INTERIOR
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+#### METHOD
+##### SERPROPERTY
+``` ABAP
+IMPORTING
+  E_COLOR TYPE INT8 OPTIONAL
+```
+### CL_OLE_BORDERS
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+#### METHOD
+##### SERPROPERTY
+``` ABAP
+IMPORTING
+  E_LINESTYLE TYPE C OPTIONAL
+  E_WEIGHT TYPE I OPTIONAL
+```
+### CL_OLE_RANGE  
+#### Overview <a id="CL_OLE_RANGE"></a>  
+Extends: [CL_OLE](#cl_ole)  
+#### METHOD
+##### INSERT
+INSERT ONE LINE.
+##### DELETE
+DELETE ONE LINE.
+##### FONT
+GET FONT
+``` ABAP
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_FONT
+```
+##### SELECT
+SET SELECT
+##### INTERIOR
+GET INTERIOR
+``` ABAP
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_INTERIOR
+```
+##### BORDERS
+GET BORDERS
+``` ABAP
+IMPORTING
+  E_BORDER TYPE C
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_BORDERS
+```
+###### SETPROPERTY
+``` ABAP
+IMPORTING
+  E_NUMBERFORMAT TYPE CHAR1024 OPTIONAL
+```
+### CL_OLE_CELL
+#### Overview
+Extends: [CL_OLE_RANGE](#CL_OLE_RANGE)
+#### METHOD
+##### VALUE
+SET VALUE
+``` ABAP
+IMPORTING
+  E_VALUE TYPE CHAR1024
+```
+### CL_OLE_ROW
+#### Overview
+Extends: [CL_OLE_RANGE](#CL_OLE_RANGE)
+### CL_OLE_COLUMN
+#### Overview
+Extends: [CL_OLE_RANGE](#CL_OLE_RANGE)
+### CL_OLE_SHEET
+#### Overview
+Extends: [CL_OLE](#cl_ole)
+#### METHOD
+##### CELLS
+GET CELLS
+``` ABAP
+IMPORTING
+  E_ROW       TYPE I
+  E_COL       TYPE I
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_CELL
+```
+##### ACTIVATE
+ACTIVE SHEET
+##### ROWS
+GET ROWS
+``` ABAP
+IMPORTING
+  E_INDEX     TYPE I
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_ROW
+```
+##### COLUMNS
+GET COLUMNS
+``` ABAP
+IMPORTING
+  E_INDEX     TYPE I
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_COLUMN
+```
+##### SETPORPERTY
+``` ABAP
+IMPORTING
+  E_NAME TYPE CHAR1024 OPTIONAL
+```
+##### RANGE
+GET RANGE SEND(E_CELL1 AND E_CELL2) OR R_RANGE EX."A1:B2"
+``` ABAP
+IMPORTING
+  E_CELL1 TYPE REF TO CL_OLE_CELL
+  E_CELL2 TYPE REF TO CL_OLE_CELL
+  E_RANGE TYPE CHAR32
+RETURNING VALUE(R_OBJ) TYPE REF TO CL_OLE_RANGE
 ```
